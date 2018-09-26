@@ -10,7 +10,7 @@ using Eigen::VectorXd;
 using std::vector;
 
 // Minimimum threshold to handle initialization problems
-#define min_thresh 0.0001
+// #define min_thresh 0.0001
 
 /*
  * Constructor.
@@ -101,11 +101,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       */
       ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
     }
-    // Handling initialization problems
-    if (fabs(ekf_.x_(0)) < min_thresh and fabs(ekf_.x_(1)) < min_thresh){
-      ekf_.x_(0) = min_thresh;
-      ekf_.x_(1) = min_thresh;
-    }
+    // // Handling initialization problems
+    // if (fabs(ekf_.x_(0)) < min_thresh and fabs(ekf_.x_(1)) < min_thresh){
+    //   ekf_.x_(0) = min_thresh;
+    //   ekf_.x_(1) = min_thresh;
+    // }
 
     // Updating current timestamp for dt calculation
     previous_timestamp_ = measurement_pack.timestamp_;
@@ -126,11 +126,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
      * Update the process noise covariance matrix.
      * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
-
-  if (fabs(ekf_.x_(0)) < min_thresh and fabs(ekf_.x_(1)) < min_thresh){
-      ekf_.x_(0) = min_thresh;
-      ekf_.x_(1) = min_thresh;
-    }
 
   float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
   previous_timestamp_ = measurement_pack.timestamp_;
